@@ -16,11 +16,11 @@ while True:
     
     # Process user input
     if TO_SCRAP == "1":
-        TO_SCRAP = "LORA"
+        TO_SCRAP = "CHECKPOINT"
         JSON_FILENAME = "models_data.json"  # Update JSON filename for models/checkpoints
         break
     elif TO_SCRAP == "2":
-        TO_SCRAP = "CHECKPOINT"
+        TO_SCRAP = "LORA"
         JSON_FILENAME = "loras_data.json"  # Update JSON filename for LORAs
         break
     else:
@@ -80,7 +80,7 @@ def parse_html_to_json(html_content):
             continue
         
         div_tag = a_tag.find_next('div', class_='flex-c absolute z-1 top-8 left-8 gap-4')
-        if div_tag and TO_SCRAP in div_tag.text:#if lora or checkpoint detected
+        if div_tag and not TO_SCRAP in div_tag.text:#if lora or checkpoint detected
             continue  # Skip this iteration
         
         data[model_name] = f"https://tensor.art/models/{model_id}"
