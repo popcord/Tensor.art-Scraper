@@ -14,14 +14,21 @@ WAIT_TIME = 5  # Adjust the waiting time as needed
 def save_webpage(url, filename):
     """Save webpage source to a file."""
     # Create a new instance of the Chrome driver
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions() # Create a ChromeOptions object
+    options.add_argument("--enable-chrome-browser-cloud-management")
+    options.add_argument("--log-level=3") # This sets the log level to suppress warnings
+
+
+    driver = webdriver.Chrome(options=options)
+
+    
     
     try:
         # Open the webpage
         driver.get(url)
         
         # Wait for user confirmation
-        input("Press Enter when ready to save the webpage...")
+        input("#"*50+"\nPress Enter when ready to save the webpage...\n")
         time.sleep(WAIT_TIME)  # Let the page load completely
         
         # Get the page source
