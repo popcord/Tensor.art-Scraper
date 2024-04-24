@@ -1,6 +1,4 @@
-import os
-import json
-import time
+import os, json, time, re
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -63,6 +61,7 @@ def save_webpage(url, filename, stype):
         # Close the browser
         driver.quit()
 
+
 def parse_html_to_json(html_content):
     """Parse HTML content and extract relevant data to JSON."""
     soup = BeautifulSoup(html_content, 'html.parser')
@@ -74,18 +73,22 @@ def parse_html_to_json(html_content):
         model_id = href.split('/')[-1] if href else None
         
         h3_tag = a_tag.find('h3')
-        model_name = h3_tag['title'].lstrip() if h3_tag else None
+        if h3_tag:
+            model_name = re.sub(r'[^a-zA-Z0-9-]', '', h3_tag['title'].lstrip())  # Remove all characters except letters, numbers, and "-"
+        else:
+            model_name = None
         
         if not model_id or not model_name:
             continue
         
         div_tag = a_tag.find_next('div', class_='flex-c absolute z-1 top-8 left-8 gap-4')
-        if div_tag and not TO_SCRAP in div_tag.text:#if lora or checkpoint detected
+        if div_tag and not TO_SCRAP in div_tag.text:  # if lora or checkpoint detected
             continue  # Skip this iteration
         
         data[model_name] = f"https://tensor.art/models/{model_id}"
     
     return data
+
 
 def update_json_data(data, json_file_path):
     """Update existing JSON file with new data."""
