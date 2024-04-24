@@ -3,7 +3,7 @@
 
 # Web Scraping and JSON Data Extraction
 
-This Python script automates the process of scraping models from [Tensor.art](https://tensor.art/), extracting relevant data, and storing it in a JSON file.
+This Python script automates the process of scraping models and/or loras from [Tensor.art](https://tensor.art/), extracting relevant data, and storing it in a JSON file.
 
 ## Description
 
