@@ -3,7 +3,7 @@
 
 # Web Scraping and JSON Data Extraction
 
-This Python script automates the process of scraping models and/or loras from [Tensor.art](https://tensor.art/), extracting relevant data, and storing it in a JSON file.
+This Python script automates the process of scraping models and/or LORAs from [Tensor.art](https://tensor.art/), extracting relevant data, and storing it in a JSON file.
 
 ## Description
 
@@ -13,7 +13,7 @@ The script performs the following tasks:
 2. Navigates to the [Tensor.art models](https://tensor.art/models) webpage URL.
 3. Waits for user confirmation before proceeding to save the webpage source.
 4. Parses the HTML content using BeautifulSoup to extract data.
-5. Filters out unwanted data based on specified conditions.
+5. Filters out unwanted data based on specified conditions(non-ascii characters).
 6. Stores the extracted data in a JSON file.
 7. Updates an existing JSON file with new data, if available.
 8. Displays the extracted data on the console.
@@ -36,7 +36,7 @@ The script performs the following tasks:
    python TensorScraper.py
    ```
 4. Follow the on-screen instructions to proceed with the web scraping process.
-5. Once completed, the extracted data will be stored in a JSON file named `models_data.json` by default.
+5. Once completed, the extracted data will be stored in a JSON file named `models_data.json` or `loras_data.json`, depending on the user's choice.
 6. You can customize the script by modifying the constants defined in the script, such as `SCRAPE_URL`, `HTML_FILENAME`, `JSON_FILENAME`, and `WAIT_TIME`.
 
 ## Requirements
@@ -56,4 +56,3 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE](LICENSE) file for details.
 
 ---
-
