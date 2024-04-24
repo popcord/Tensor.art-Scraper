@@ -8,10 +8,28 @@ from selenium.webdriver.common.keys import Keys
 # Constants
 SCRAPE_URL = "https://tensor.art/models"
 HTML_FILENAME = "scraped.html"
-JSON_FILENAME = "models_data.json"
 WAIT_TIME = 5  # Adjust the waiting time as needed
+while True:
+    os.system("cls || clear")
+    # Prompt user for selection
+    TO_SCRAP = input("What do you want to scrap?\n1 - Models/Checkpoints\n2 - LORAs\n>>> ")
+    
+    # Process user input
+    if TO_SCRAP == "1":
+        TO_SCRAP = "LORA"
+        JSON_FILENAME = "models_data.json"  # Update JSON filename for models/checkpoints
+        break
+    elif TO_SCRAP == "2":
+        TO_SCRAP = "CHECKPOINT"
+        JSON_FILENAME = "loras_data.json"  # Update JSON filename for LORAs
+        break
+    else:
+        print("Invalid input. Please select only 1 or 2")
+        time.sleep(3)
 
-def save_webpage(url, filename):
+
+
+def save_webpage(url, filename, stype):
     """Save webpage source to a file."""
     # Create a new instance of the Chrome driver
     options = webdriver.ChromeOptions() # Create a ChromeOptions object
@@ -62,7 +80,7 @@ def parse_html_to_json(html_content):
             continue
         
         div_tag = a_tag.find_next('div', class_='flex-c absolute z-1 top-8 left-8 gap-4')
-        if div_tag and "LORA" in div_tag.text:#if lora detected
+        if div_tag and TO_SCRAP in div_tag.text:#if lora or checkpoint detected
             continue  # Skip this iteration
         
         data[model_name] = f"https://tensor.art/models/{model_id}"
@@ -83,7 +101,7 @@ def update_json_data(data, json_file_path):
 
 def main():
     # Step 1: Save webpage
-    save_webpage(SCRAPE_URL, HTML_FILENAME)
+    save_webpage(SCRAPE_URL, HTML_FILENAME, TO_SCRAP)
     
     # Step 2: Read HTML content from the file
     with open(HTML_FILENAME, "r", encoding="utf-8") as html_file:
