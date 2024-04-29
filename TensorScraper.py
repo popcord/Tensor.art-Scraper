@@ -65,7 +65,12 @@ def save_webpage(url, filename, stype):
 def parse_html_to_json(html_content):
     """Parse HTML content and extract relevant data to JSON."""
     soup = BeautifulSoup(html_content, 'html.parser')
-    data = {}
+    
+    if os.path.exists(JSON_FILENAME):
+        with open(JSON_FILENAME, 'r', encoding='utf-8') as json_file:
+            data = json.load(json_file)
+    else:
+        data = {'SDXL': {}, 'SD': {}} 
     
     # Find all <a> tags
     for a_tag in soup.find_all('a', class_='group'):
@@ -84,8 +89,14 @@ def parse_html_to_json(html_content):
         div_tag = a_tag.find_next('div', class_='flex-c absolute z-1 top-8 left-8 gap-4')
         if div_tag and not TO_SCRAP in div_tag.text:  # if lora or checkpoint detected
             continue  # Skip this iteration
-        
-        data[model_name] = f"https://tensor.art/models/{model_id}"
+
+        if div_tag and " XL " in div_tag.text:
+            if model_name not in data['SDXL']:
+                data['SDXL'][model_name] = f"https://tensor.art/models/{model_id}"
+        else:
+            if model_name not in data['SD']:
+                data['SD'][model_name] = f"https://tensor.art/models/{model_id}"
+
     
     return data
 
@@ -93,11 +104,8 @@ def parse_html_to_json(html_content):
 def update_json_data(data, json_file_path):
     """Update existing JSON file with new data."""
     if os.path.exists(json_file_path):
-        with open(json_file_path, 'r', encoding='utf-8') as json_file:
-            existing_data = json.load(json_file)
-        existing_data.update(data)
         with open(json_file_path, 'w', encoding='utf-8') as json_file:
-            json.dump(existing_data, json_file, indent=4, ensure_ascii=False)
+            json.dump(data, json_file, indent=4, ensure_ascii=False)
     else:
         with open(json_file_path, 'w', encoding='utf-8') as json_file:
             json.dump(data, json_file, indent=4, ensure_ascii=False)
@@ -118,8 +126,11 @@ def main():
     
     # Step 5: Print the updated dictionary
     os.system("cls || clear")
+    if os.path.exists(HTML_FILENAME):
+        os.remove(HTML_FILENAME)
     print(data)
     input("Press Enter to exit...")
+    
 
 if __name__ == "__main__":
     main()
