@@ -14,7 +14,7 @@ The script performs the following tasks:
 3. Waits for user confirmation before proceeding to save the webpage source.
 4. Parses the HTML content using BeautifulSoup to extract data.
 5. Filters out unwanted data based on specified conditions(non-ascii characters).
-6. Stores the extracted data in a JSON file.
+6. Stores the extracted data in a JSON file. __**sd and sdxl are separated**__
 7. Updates an existing JSON file with new data, if available.
 8. Displays the extracted data on the console.
 
