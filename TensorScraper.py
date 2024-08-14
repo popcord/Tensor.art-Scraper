@@ -10,7 +10,7 @@ WAIT_TIME = 5  # Adjust the waiting time as needed
 while True:
     os.system("cls || clear")
     # Prompt user for selection
-    TO_SCRAP = input("What do you want to scrap?\n1 - Models/Checkpoints\n2 - LORAs\n>>> ")
+    TO_SCRAP = input("What do you want to scrap?\n1 - Models/Checkpoints\n2 - LORAs\n3 - DORAs\n4 - LOCONs\n5 - LYCORYS\n6 - EMBEDDING\n>>> ")
     
     # Process user input
     if TO_SCRAP == "1":
@@ -21,9 +21,29 @@ while True:
         TO_SCRAP = "LORA"
         JSON_FILENAME = "loras_data.json"  # Update JSON filename for LORAs
         break
+    elif TO_SCRAP == "3":
+        TO_SCRAP = "DORA"
+        JSON_FILENAME = "doras_data.json"  # Update JSON filename for DORAs
+        break      
+    elif TO_SCRAP == "4":
+        TO_SCRAP = "LOCON"
+        JSON_FILENAME = "locons_data.json"  # Update JSON filename for LOCONs
+        break  
+    elif TO_SCRAP == "5":
+        TO_SCRAP = "LYCORIS"
+        JSON_FILENAME = "lycoris_data.json"  # Update JSON filename for LYCORIS
+        break
+    elif TO_SCRAP == "6":
+        TO_SCRAP = "EMBEDDING"
+        JSON_FILENAME = "embedding_data.json"  # Update JSON filename for EMBEDDING
+        break  
     else:
-        print("Invalid input. Please select only 1 or 2")
+        print("Invalid input. Please select only between 1-6")
         time.sleep(3)
+
+        
+# How to use
+print("How to use: To find what you're looking for, simply scroll until you find something that suits your needs. For more precise results, you can also use research tools, tags, and filters available on the website.\n"+"="*10)
 
 
 
@@ -44,7 +64,7 @@ def save_webpage(url, filename, stype):
         driver.get(url)
         
         # Wait for user confirmation
-        input("#"*50+"\nPress Enter when ready to save the webpage...\n")
+        input("#"*50+"\nPress Enter when you are ready to save the webpage...\n")
         time.sleep(WAIT_TIME)  # Let the page load completely
         
         # Get the page source
@@ -70,12 +90,14 @@ def parse_html_to_json(html_content):
         with open(JSON_FILENAME, 'r', encoding='utf-8') as json_file:
             data = json.load(json_file)
     else:
-        data = {'SDXL': {}, 'SD': {}} 
+        data = {'SD': {}, 'SDXL': {}, 'SD3': {}, 'Kolors': {}, 'HunyuanDiT': {}} 
     
     # Find all <a> tags
     for a_tag in soup.find_all('a', class_='group'):
         href = a_tag.get('href')
-        model_id = href.split('/')[-1] if href else None
+        model_id = href.split('/')[-2] if href else None
+        if model_id is not None and not model_id.isdigit():
+            model_id = href.split('/')[-1] if href else None
         
         h3_tag = a_tag.find('h3')
         if h3_tag:
@@ -92,10 +114,19 @@ def parse_html_to_json(html_content):
 
         if div_tag and " XL " in div_tag.text:
             if model_name not in data['SDXL']:
-                data['SDXL'][model_name] = f"https://tensor.art/models/{model_id}"
+                data['SDXL'][model_name] = f"{model_id}"
+        elif div_tag and " SD3 " in div_tag.text:
+            if model_name not in data['SD3']:
+                data['SD3'][model_name] = f"{model_id}"
+        elif div_tag and " Kolors " in div_tag.text:
+            if model_name not in data['Kolors']:
+                data['SD3'][model_name] = f"{model_id}"
+        elif div_tag and " HunyuanDiT " in div_tag.text:
+            if model_name not in data['HunyuanDiT']:
+                data['SD3'][model_name] = f"{model_id}"
         else:
             if model_name not in data['SD']:
-                data['SD'][model_name] = f"https://tensor.art/models/{model_id}"
+                data['SD'][model_name] = f"{model_id}"
 
     
     return data
@@ -128,7 +159,6 @@ def main():
     os.system("cls || clear")
     if os.path.exists(HTML_FILENAME):
         os.remove(HTML_FILENAME)
-    print(data)
     input("Press Enter to exit...")
     
 
