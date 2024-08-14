@@ -1,43 +1,44 @@
+# Tensor.Art Scraper
 
----
-
-# Web Scraping and JSON Data Extraction
-
-This Python script automates the process of scraping models and/or LORAs from [Tensor.art](https://tensor.art/), extracting relevant data, and storing it in a JSON file.
+This Python script automates the process of scraping model-related data (such as Models/Checkpoints, LORAs, DORAs, LOCONs, LYCORIS, or EMBEDDINGs) from [Tensor.art](https://tensor.art/), extracting relevant information, and storing it in a JSON file.
 
 ## Description
 
 The script performs the following tasks:
 
-1. Launches a Chrome browser using Selenium WebDriver.
-2. Navigates to the [Tensor.art models](https://tensor.art/models) webpage URL.
-3. Waits for user confirmation before proceeding to save the webpage source.
-4. Parses the HTML content using BeautifulSoup to extract data.
-5. Filters out unwanted data based on specified conditions(non-ascii characters).
-6. Stores the extracted data in a JSON file. __**sd and sdxl are separated**__
-7. Updates an existing JSON file with new data, if available.
-8. Displays the extracted data on the console.
+1. **User Input for Data Type**: Prompts the user to select the type of data they want to scrape (e.g., Models/Checkpoints, LORAs, etc.).
+2. **Launches Chrome Browser**: Uses Selenium WebDriver to launch a Chrome browser.
+3. **Navigates to Tensor.Art Models Page**: Directs the browser to the [Tensor.art models](https://tensor.art/models) webpage.
+4. **User Confirmation**: Waits for the user to confirm when the page is ready to be scraped.
+5. **Saves Webpage Source**: Captures and saves the webpage's HTML content.
+6. **Parses HTML Content**: Utilizes BeautifulSoup to parse the HTML and extract relevant model data.
+7. **Filters Data**: Filters the scraped data based on user selection (e.g., SDXL models, LORAs, etc.).
+8. **Stores Data in JSON**: Saves the extracted data into a JSON file. The filename is determined by the user's choice (e.g., `models_data.json` for Models/Checkpoints, `loras_data.json` for LORAs).
+9. **Updates Existing JSON**: If the JSON file already exists, it updates it with new data while preserving existing information.
+10. **Displays Extracted Data**: The script will print the extracted data to the console and remove the temporary HTML file.
 
 ## Installation
 
-1. Install Python 3.x from [python.org](https://www.python.org/downloads/).
-2. Install the required Python packages using pip:
-   ```
+1. **Python 3.x**: Ensure you have Python 3.x installed. You can download it from [python.org](https://www.python.org/downloads/).
+2. **Install Required Packages**: Use pip to install the required Python packages:
+   ```bash
    pip install selenium beautifulsoup4
    ```
-3. Download the appropriate [Chrome WebDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) for your Chrome browser version and ensure it's in your system PATH.
+3. **Download Chrome WebDriver**: Download the appropriate [Chrome WebDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) for your version of Chrome. Ensure it's accessible via your system's PATH.
 
 ## Usage
 
-1. Clone or download the script to your local machine.
-2. Open a terminal or command prompt and navigate to the directory containing the script.
-3. Run the script using the following command:
-   ```
+1. **Clone or Download the Script**: Clone this repository or download the script to your local machine.
+2. **Run the Script**: Navigate to the directory containing the script using a terminal or command prompt, and execute:
+   ```bash
    python TensorScraper.py
    ```
-4. Follow the on-screen instructions to proceed with the web scraping process.
-5. Once completed, the extracted data will be stored in a JSON file named `models_data.json` or `loras_data.json`, depending on the user's choice.
-6. You can customize the script by modifying the constants defined in the script, such as `SCRAPE_URL`, `HTML_FILENAME`, `JSON_FILENAME`, and `WAIT_TIME`.
+3. **Follow the On-Screen Instructions**: Select the type of data you want to scrape and follow the prompts.
+4. **View the Results**: The scraped data will be stored in a JSON file named according to the data type you selected (e.g., `models_data.json` for Models/Checkpoints). The JSON file will contain the data categorized by SD, SDXL, SD3, Kolors, and HunyuanDiT.
+
+## Customization
+
+You can customize the script by modifying the constants at the beginning of the script, such as `SCRAPE_URL`, `HTML_FILENAME`, `JSON_FILENAME`, and `WAIT_TIME`.
 
 ## Requirements
 
@@ -49,7 +50,7 @@ The script performs the following tasks:
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome! If you want to make significant changes, please open an issue first to discuss what you would like to modify.
 
 ## License
 
